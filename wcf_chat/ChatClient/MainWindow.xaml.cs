@@ -36,7 +36,9 @@ namespace ChatClient
                 client = new ServiceChatClient(new System.ServiceModel.InstanceContext(this));
                 id = client.Connect(tbUserName.Text);
                 tbUserName.IsEnabled = false;
-                bConnDiscon.Content = "Отключиться";
+                bConnDiscon.Content = "Disconnect";
+                tbStatusBar.Text = "online";
+                tbStatusBar.Foreground = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Green");
                 isConnected = true;
             }
         }
@@ -48,7 +50,9 @@ namespace ChatClient
                 client.Disconnect(id);
                 client = null;
                 tbUserName.IsEnabled = true;
-                bConnDiscon.Content = "Подключиться";
+                bConnDiscon.Content = "Connect";
+                tbStatusBar.Text = "offline";
+                tbStatusBar.Foreground = (Brush)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Brush)).ConvertFromInvariantString("Red");
                 isConnected = false;
             }
         }
@@ -85,6 +89,15 @@ namespace ChatClient
                     client.SendMessage(tbMessage.Text, id);
                     tbMessage.Text = "";
                 }
+            }
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            if (client != null)
+            {
+                client.SendMessage(tbMessage.Text, id);
+                tbMessage.Text = "";
             }
         }
     }
